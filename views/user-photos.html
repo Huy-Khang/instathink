@@ -1,0 +1,251 @@
+<!doctype html>
+<html ng-app="sn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>InstaThink</title>
+
+  <link rel="stylesheet" href="public/vendor/bootstrap/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="public/vendor/font-awesome/css/font-awesome.min.css" type="text/css">
+
+  <!-- <link rel="stylesheet" href="../public/css/sb-admin-2.css" type="text/css"> -->
+  <link rel="stylesheet" href="public/css/instathink.css" type="text/css">
+  <link rel="stylesheet" href="public/css/thumbnail-gallery.css" type="text/css">
+  
+
+</head>
+
+<body>
+#user
+
+<div class="wrap box">
+  <div class="row row-offcanvas row-offcanvas-left">
+    
+    <!-- sidebar -->
+    <div id="sidebar" class="column col-sm-2 col-xs-1 sidebar-offcanvas" >
+        
+      <ul class="nav">
+         <li><a href="#" data-toggle="offcanvas" class="visible-xs text-center"><i class="glyphicon glyphicon-chevron-right"></i></a></li>
+         </ul>
+         
+          <ul class="nav hidden-xs" id="lg-menu">
+              <li><a href="/profile"><i class="fa fa-smile-o"></i> My Profile</a></li>
+              <li class="active"><a href="/newfeed"><i class="fa fa-newspaper-o"></i> New Feed</a></li>
+              <li><a href="/setting"><i class="fa fa-gear"></i> User Setting</a></li>    
+              <li><a href="/logout"><i class="fa fa-sign-out"></i> Sign out</a></li>  
+          </ul>
+          <ul class="list-unstyled hidden-xs" id="sidebar-footer">
+              <li>
+                <a href="/"><h3>Instathink</h3> <i class="fa fa-heart-o"></i> You</a>
+              </li>
+          </ul>
+        
+          <!-- tiny only nav-->
+          <ul class="nav visible-xs" id="xs-menu">
+              <li><a href="/profile" class="text-center"><i class="fa fa-smile-o"></i></a></li>
+              <li><a href="/newfeed" class="text-center"><i class="fa fa-newspaper-o"></i></a></li>
+              <li><a href="/setting" class="text-center"><i class="fa fa-gear"></i></a></li>
+              <li><a href="/logout" class="text-center"><i class="fa fa-sign-out"></i></a></li>
+          </ul>
+        
+    </div>
+    <!-- /sidebar -->
+
+    <!-- main -->
+    <div class="column col-sm-10 col-xs-11" id="main">  
+
+      <!-- Top nav bar -->
+      <div id="topnavbar" ng-controller="TopController as topCtrl">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+          
+          <div class="navbar-header">
+              <a href="/profile"><img class="avatar pull-left" src="image/getimage/{{topCtrl.Avatar}}" style="margin: 5px;"></a>
+              <a class="navbar-brand" href="/profile">{{topCtrl.DisplayName}}</a>
+              <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                  <input ng-model="topCtrl.searchName" type="text" class="form-control" placeholder="Search">
+                </div>
+                <button ng-click="topCtrl.search()" type="button" class="btn btn-default">
+                  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+              </form>
+          </div>
+
+          <!-- /.navbar-header -->
+          <ul class="nav navbar-top-links navbar-right">
+
+              <!-- Friend request -->
+              <li class="dropdown" ng-init="topCtrl.initRequest()">
+                  <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-user fa-fw fa-2x"></i>
+                      <span class="badge badge-notify">{{topCtrl.requestNumber}}</span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-messages scrollable">
+                      <li><strong>Friend Requests</strong></li>
+                      <li class="divider"></li>
+
+                      <!-- items -->
+                      <li ng-repeat="request in topCtrl.requests">
+                          <div class="chat-person">
+                              <div class="media">
+                                <img class="pull-left avatar" src="image/getimage/{{request.Avatar}}">
+                                <div class="media-body">
+                                  <a href="friendprofile?namefriend={{request.Username}}"><h4 class="media-heading">{{request.DisplayName}}</h4></a>
+                              </div>
+                          </div>
+                      </li>
+                      
+                      <!-- /items -->
+                  </ul>
+              </li>
+
+              <!-- Messages -->
+              <li class="dropdown" ng-init="topCtrl.initMessage()">
+                  <a ng-click="topCtrl.clickMessage()" class="dropdown-toggle active" data-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-envelope fa-fw fa-2x"></i>
+                      <span class="badge badge-notify">{{topCtrl.messageNumber}}</span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-messages in scrollable">
+                      <li><strong>Messages</strong></li>
+                      <li class="divider"></li>
+                      <!-- items -->
+                      <li ng-repeat="message in topCtrl.messages">
+                          <a href="chat?namefriend={{message.Username}}" class="active">
+                              <div class="media">
+                                <img class="pull-left avatar" src="image/getimage/{{message.Avatar}}">
+                                <div class="media-body">
+                                  <h4 class="media-heading">{{message.DisplayName}}</h4>
+                                  {{message.LastMessage}}
+                                  <p>{{message.Time}}</p>
+                                </div>
+                              </div>
+                          </a>
+                      </li>
+                      <!-- /items -->
+                  </ul>
+              </li>
+
+              <!-- Notifications -->
+              <li ng-init="topCtrl.initNotification()" class="dropdown">
+                  <a ng-click="topCtrl.clickNotification()" href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-globe fa-fw fa-2x"></i>
+                      <span class="badge badge-notify">{{topCtrl.notificationNumber}}</span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-messages in scrollable">
+                      <li><strong>Notifications</strong></li>
+                      <li class="divider"></li>
+                      <!-- items -->
+                      <li ng-repeat="notification in topCtrl.notifications">
+                          <a href="postdetail?id={{notification.Link}}" class="active">
+                              <div class="media">
+                                <img class="pull-left" src="image/getimage/{{notification.Image}}">
+                                <div class="media-body">
+                                  <h4 class="media-heading">{{notification.Description}}</h4>
+                                  {{notification.Time}}
+                                </div>
+                              </div>
+                          </a>
+                      </li>
+                      <!-- /items -->
+                  </ul>
+              </li>
+              
+          </ul>
+        </nav>
+      </div>
+      <!-- /top navbar -->
+
+
+
+      <!-- Main Content -->
+      <div id="main-content" class="full padding">
+          <div class="row">
+            <!-- tabs -->
+            <ul class="nav nav-pills" style="padding:15px">
+              <li role="presentation" ><a href="profile">Timeline</a></li>
+              <li role="presentation" class="active" ><a href="photos">Photos</a></li>
+              <li role="presentation" ><a href="friends">Friends</a></li>
+            </ul>  
+          </div>
+
+          <div class="row">
+
+            <!-- Content -->
+            <div class="col-xs-12">
+
+              <!-- Page Content -->
+              <div class="container-fluid" ng-controller="MainController as mainCtrl" ng-init="mainCtrl.init()">
+                  <div ng-hide="mainCtrl.hide">
+                    <form name="postnewform" class="form-horizontal" role="form">
+                      <input id="inUsername" type="text" value="#{user.Username}">
+                  <input id="inPassword" type="text" value="#{user.Password}">
+                  <input id="inId" type="text" value="#{user._id}">
+                  <input id="inDisplayName" type="text" value="#{user.DisplayName}">
+                  <input id="inAvatar" type="text" value="#{user.Avatar}">
+                    </form>
+                  </div>
+                  <div class="row">
+
+                      <div class="col-xs-12">
+                          <h1 class="page-header" style="margin-top: 10px">Photo Gallery</h1>
+                      </div>
+
+                      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumb" ng-repeat="photo in mainCtrl.photos">
+                          <a class="thumbnail" href="postdetail?id={{photo.PostId}}">
+                            <img class="img-responsive" src="image/getimage/{{photo.LinkPhoto}}" alt="">  
+                          </a>
+                      </div>
+                      
+                  </div>
+
+                  <hr>
+
+                  <!-- Footer -->
+                  <footer>
+                      <div class="row">
+                          <div class="col-lg-12">
+                              <p>Copyright &copy; Your Website 2014</p>
+                          </div>
+                      </div>
+                  </footer>
+
+              </div>
+              <!-- /.container -->              
+
+            </div>
+            <!-- /Content -->
+
+
+
+            
+
+
+          </div>
+          <!-- row -->
+      </div><!-- /main content -->  
+
+
+
+    </div>
+    <!-- /main -->
+
+  </div>
+  <!-- /row -->
+
+</div>
+<!-- /wrap box -->
+
+<script src="public/vendor/jquery/jquery.min.js"></script>
+<script src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="public/vendor/angular/angular.min.js"></script>
+<script src="public/vendor/angular-ui-router/angular-ui-router.min.js"></script>
+<script src="public/vendor/holderjs/holder.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="public/js/user-photos.js"></script>
+
+<script src="public/js/instathink.js"></script>
+<!-- <script src="../public/js/MainController.js"></script> -->
+
+
+</body>
+</html>

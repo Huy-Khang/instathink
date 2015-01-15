@@ -1,0 +1,85 @@
+html,body {
+  height:100%;
+}
+
+h1 {
+  font-family: Arial,sans-serif
+  font-size:80px;
+  color:#DDCCEE;
+}
+
+.lead {
+	color:#DDCCEE;
+}
+
+
+/* Custom container */
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+  min-height:100%;
+  background-color:#110022;
+  color:#eee;
+  overflow:hidden;
+}
+
+.container-full a {
+  color:#efefef;
+  text-decoration:none;
+}
+
+.v-center {
+  margin-top:7%;
+}
+  
+.input-group input {
+  border-radius: 0px;
+}
+
+.input-group button {
+  margin-top: 20px;
+  width: 100%;
+}
+
+
+/*
+  Google plus button
+ */
+
+#customBtn {
+      display: inline-block;
+      background: #dd4b39;
+      color: white;
+      width: 165px;
+      border-radius: 5px;
+      white-space: nowrap;
+      height: 40px;
+      width: 340px;
+      margin-top: 20px;
+    }
+    #customBtn:hover {
+      background: #e74b37;
+      cursor: hand;
+    }
+    span.label {
+      font-weight: bold;
+    }
+    span.icon {
+      background: transparent 5px 50% no-repeat;
+      display: inline-block;
+      vertical-align: middle;
+      width: 35px;
+      height: 35px;
+      border-right: #bb3f30 1px solid;
+    }
+    span.buttonText {
+      margin-top: 10px;
+      display: inline-block;
+      vertical-align: middle;
+      padding-left: 35px;
+      padding-right: 35px;
+      font-size: 14px;
+      font-weight: bold;
+      /* Use the Roboto font that is loaded in the <head> */
+      font-family: 'Roboto',arial,sans-serif;
+    }

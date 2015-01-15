@@ -1,0 +1,38 @@
+diff a/controllers/postController.js b/controllers/postController.js	(rejected hunks)
+@@ -250,12 +250,31 @@
+ 			if (user.UserId != idUser)
+ 			{
+ 				userController.postNotification(user.UserId, noti, function(err) {
+-<<<<<<< HEAD
+-=======
+-
+->>>>>>> 6223d361a775d1c639bcd1457513f9cd4d1fa3bf
+ 				});
+ 			}
+ 		});
+ 	});
++};
++
++
++exports.postImage = function(req, res){
++	User.findById(req.user._id, function(err, user){
++		if(err){
++			res.json(err);
++		}else{
++			imageController.deleteImage(user.Avatar);
++				
++				imageController.uploadImage(req.files.image.path, req.files.image.name, function(err, path){
++						if(err){
++							res.json(err);
++						}else{
++							user.Avatar = req.files.image.name;
++							user.save(function(err){
++								if(!err)
++									res.json({'name': req.files.image.name});
++							});
++						}
++					});
++		}
++	});
+ };
+\ No newline at end of file

@@ -1,0 +1,224 @@
+doctype 
+html(ng-app='sn')
+head
+    meta(charset='utf-8')
+    |   
+    meta(name='viewport', content='width=device-width')
+    |   
+    title InstaThink
+    |   
+    link(rel='stylesheet', href='public/vendor/bootstrap/css/bootstrap.min.css', type='text/css')
+    |   
+    link(rel='stylesheet', href='public/vendor/font-awesome/css/font-awesome.min.css', type='text/css')
+    // <link rel="stylesheet" href="../public/css/sb-admin-2.css" type="text/css">
+    link(rel='stylesheet', href='public/css/instathink.css', type='text/css')
+    |   
+    link(rel='stylesheet', href='public/css/thumbnail-gallery.css', type='text/css')
+  body
+    | #user
+    .wrap.box
+      .row.row-offcanvas.row-offcanvas-left
+        // sidebar
+        #sidebar.column.col-sm-2.col-xs-1.sidebar-offcanvas
+          ul.nav
+            li
+              a.visible-xs.text-center(href='#', data-toggle='offcanvas')
+                i.glyphicon.glyphicon-chevron-right
+          |          
+          |           
+          ul#lg-menu.nav.hidden-xs
+            li
+              a(href='/profile')
+                i.fa.fa-smile-o
+                |  My Profile
+            |               
+            li.active
+              a(href='/newfeed')
+                i.fa.fa-newspaper-o
+                |  New Feed
+            |               
+            li
+              a(href='/setting')
+                i.fa.fa-gear
+                |  User Setting
+            |     
+            |               
+            li
+              a(href='/logout')
+                i.fa.fa-sign-out
+                |  Sign out
+          |           
+          ul#sidebar-footer.list-unstyled.hidden-xs
+            li
+              a(href='/')
+                h3 Instathink
+                |  
+                i.fa.fa-heart-o
+                |  You
+          // tiny only nav
+          ul#xs-menu.nav.visible-xs
+            li
+              a.text-center(href='/profile')
+                i.fa.fa-smile-o
+            |               
+            li
+              a.text-center(href='/newfeed')
+                i.fa.fa-newspaper-o
+            |               
+            li
+              a.text-center(href='/setting')
+                i.fa.fa-gear
+            |               
+            li
+              a.text-center(href='/logout')
+                i.fa.fa-sign-out
+        // /sidebar
+        // main
+        #main.column.col-sm-10.col-xs-11
+          // Top nav bar
+          #topnavbar(ng-controller='TopController as topCtrl')
+            nav.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0')
+              .navbar-header
+                a(href='/profile')
+                  img.avatar.pull-left(src='image/getimage/{{topCtrl.Avatar}}', style='margin: 5px;')
+                |               
+                a.navbar-brand(href='/profile') {{topCtrl.DisplayName}}
+                |               
+                form.navbar-form.navbar-left(role='search')
+                  .form-group
+                    input.form-control(ng-model='topCtrl.searchName', type='text', placeholder='Search')
+                  |                 
+                  button.btn.btn-default(ng-click='topCtrl.search()', type='button')
+                    span.glyphicon.glyphicon-search(aria-hidden='true')
+              // /.navbar-header
+              ul.nav.navbar-top-links.navbar-right
+                // Friend request
+                li.dropdown(ng-init='topCtrl.initRequest()')
+                  a.dropdown-toggle.active(href='#', data-toggle='dropdown', aria-expanded='false')
+                    i.fa.fa-user.fa-fw.fa-2x
+                    |                       
+                    span.badge.badge-notify {{topCtrl.requestNumber}}
+                  |                   
+                  ul.dropdown-menu.dropdown-messages.scrollable
+                    li
+                      strong Friend Requests
+                    |                       
+                    li.divider
+                    // items
+                    li(ng-repeat='request in topCtrl.requests')
+                      .chat-person
+                        .media
+                          img.pull-left.avatar(src='image/getimage/{{request.Avatar}}')
+                          |                                 
+                          .media-body
+                            a(href='friendprofile?namefriend={{request.Username}}')
+                              h4.media-heading {{request.DisplayName}}
+                    // /items
+                // Messages
+                li.dropdown(ng-init='topCtrl.initMessage()')
+                  a.dropdown-toggle.active(ng-click='topCtrl.clickMessage()', data-toggle='dropdown', aria-expanded='false')
+                    i.fa.fa-envelope.fa-fw.fa-2x
+                    |                       
+                    span.badge.badge-notify {{topCtrl.messageNumber}}
+                  |                   
+                  ul.dropdown-menu.dropdown-messages.in.scrollable
+                    li
+                      strong Messages
+                    |                       
+                    li.divider
+                    // items
+                    li(ng-repeat='message in topCtrl.messages')
+                      a.active(href='chat?namefriend={{message.Username}}')
+                        .media
+                          img.pull-left.avatar(src='image/getimage/{{message.Avatar}}')
+                          |                                 
+                          .media-body
+                            h4.media-heading {{message.DisplayName}}
+                            |                                   {{message.LastMessage}}
+                            |                                   
+                            p {{message.Time}}
+                    // /items
+                // Notifications
+                li.dropdown(ng-init='topCtrl.initNotification()')
+                  a.dropdown-toggle.active(ng-click='topCtrl.clickNotification()', href='#', data-toggle='dropdown', aria-expanded='false')
+                    i.fa.fa-globe.fa-fw.fa-2x
+                    |                       
+                    span.badge.badge-notify {{topCtrl.notificationNumber}}
+                  |                   
+                  ul.dropdown-menu.dropdown-messages.in.scrollable
+                    li
+                      strong Notifications
+                    |                       
+                    li.divider
+                    // items
+                    li(ng-repeat='notification in topCtrl.notifications')
+                      a.active(href='postdetail?id={{notification.Link}}')
+                        .media
+                          img.pull-left(src='image/getimage/{{notification.Image}}')
+                          |                                 
+                          .media-body
+                            h4.media-heading {{notification.Description}}
+                            |                                   {{notification.Time}}
+                    // /items
+          // /top navbar
+          // Main Content
+          #main-content.full.padding
+            .row
+              // tabs
+              ul.nav.nav-pills(style='padding:15px')
+                li(role='presentation')
+                  a(href='profile') Timeline
+                |               
+                li.active(role='presentation')
+                  a(href='photos') Photos
+                |               
+                li(role='presentation')
+                  a(href='friends') Friends
+            |           
+            .row
+              // Content
+              .col-xs-12
+                // Page Content
+                .container-fluid(ng-controller='MainController as mainCtrl', ng-init='mainCtrl.init()')
+                  div(ng-hide='mainCtrl.hide')
+                    form.form-horizontal(name='postnewform', role='form')
+                      input#inUsername(type='text', value='#{user.Username}')
+                      |                   
+                      input#inPassword(type='text', value='#{user.Password}')
+                      |                   
+                      input#inId(type='text', value='#{user._id}')
+                      |                   
+                      input#inDisplayName(type='text', value='#{user.DisplayName}')
+                      |                   
+                      input#inAvatar(type='text', value='#{user.Avatar}')
+                  |                   
+                  .row
+                    .col-xs-12
+                      h1.page-header(style='margin-top: 10px') Photo Gallery
+                    |                       
+                    .col-lg-3.col-md-4.col-sm-6.col-xs-12.thumb(ng-repeat='photo in mainCtrl.photos')
+                      a.thumbnail(href='postdetail?id={{photo.PostId}}')
+                        img.img-responsive(src='image/getimage/{{photo.LinkPhoto}}', alt='')
+                  |                   
+                  hr
+                  // Footer
+                  footer
+                    .row
+                      .col-lg-12
+                        p Copyright &copy; Your Website 2014
+                // /.container
+              // /Content
+            // row
+          // /main content
+        // /main
+      // /row
+    // /wrap box
+    script(src='public/vendor/jquery/jquery.min.js')
+    script(src='public/vendor/bootstrap/js/bootstrap.min.js')
+    script(src='public/vendor/angular/angular.min.js')
+    script(src='public/vendor/angular-ui-router/angular-ui-router.min.js')
+    script(src='public/vendor/holderjs/holder.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='public/js/user-photos.js')
+    script(src='public/js/instathink.js')
+    // <script src="../public/js/MainController.js"></script>

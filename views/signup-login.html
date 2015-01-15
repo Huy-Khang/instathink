@@ -1,0 +1,82 @@
+<!doctype html>
+<html ng-app="sn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>InstaThink</title>
+  <link rel="stylesheet" href="public/vendor/bootstrap/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="public/vendor/font-awesome/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="public/css/signup-login.css" type="text/css"> 
+</head>
+
+<body>
+
+  <script src="public/js/jquery-1.11.0.js"></script>
+  <script src="public/js/bootstrap.min.js"></script>
+  <script src="public/js/angular.min.js"></script>
+  <script src="public/js/signup-login.js"></script>
+  
+  <div class="container-full">
+      <div class="row">
+        <div class="col-lg-12 text-center v-center">
+          
+          <h1>Welcome to Insta....THINK !!</h1>
+          
+          <br><br><br>
+          
+          <div class="row" ng-controller="MainController as mainCtrl">
+            <form name="signupform" role="form" ng-submit="mainCtrl.signUp()" class="col-lg-6">
+              <p class="lead">Sign up to broadcast your thought to the world</p>
+              <div id="signup-info" class="input-group" style="width:340px;text-align:center;margin:0 auto;border-radius:0px;">
+                <input ng-model="mainCtrl.user.Username" class="form-control input-lg" placeholder="UserName" type="text" required>
+                <input ng-model="mainCtrl.user.Email" class="form-control input-lg" placeholder="Email address" type="text" required>
+                <input ng-model="mainCtrl.user.DisplayName" class="form-control input-lg" placeholder="Display Name" type="text" required>
+                <input ng-model="mainCtrl.user.Password" class="form-control input-lg" placeholder="Password" type="password" required>
+                <input ng-model="mainCtrl.user.RePassword" class="form-control input-lg" placeholder="Repeat Password" type="password" required>
+                <button class="btn btn-lg btn-primary" type="submit">Sign Up</button>
+              </div>
+            </form>
+
+            <form name="signinform" role="form" ng-submit="mainCtrl.signIn()" class="col-lg-6">
+              <p class="lead">Already have a account, log in now !</p>
+              <div id="signup-info" class="input-group" style="width:340px;text-align:center;margin:0 auto;border-radius:0px;">
+                <input ng-model="mainCtrl.user2.Username" class="form-control input-lg" placeholder="Username" type="text">
+                <input ng-model="mainCtrl.user2.Password" class="form-control input-lg" placeholder="Password" type="password">
+                <button class="btn btn-lg btn-primary" type="submit">Sign In</button>
+                
+              </div>
+            </form>
+
+            <div  id="gSignInWrapper">
+                  <!-- <span class="label">Sign in with:</span> -->
+                  <div ng-click="mainCtrl.google()" id="customBtn" class="customGPlusSignIn">
+                    <span class="buttonText">Sign in with Google</span>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /row -->
+      <div class="row">
+        <div class="col-lg-12 text-center v-center" style="font-size:39pt;">
+          <a href="#"><i class="icon-google-plus"></i></a> <a href="#"><i class="icon-facebook"></i></a>  <a href="#"><i class="icon-twitter"></i></a> <a href="#"><i class="icon-github"></i></a> <a href="#"><i class="icon-pinterest"></i></a>
+        </div>
+      
+      </div>
+  
+    <br><br><br><br><br>
+
+</div> <!-- /container full -->
+
+<div class="container">
+  
+    <hr>
+  <div class="row">
+        <div class="col-lg-12">
+        <br><br>
+          <p class="pull-right"><a href="http://www.bootply.com">Create by Instathink team</a> &nbsp; ©Copyright 2014</p>
+        <br><br>
+        </div>
+    </div>
+</div>
+</body>
+</html>

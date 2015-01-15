@@ -1,0 +1,342 @@
+doctype 
+html(ng-app='sn')
+head
+    meta(charset='utf-8')
+    |   
+    meta(name='viewport', content='width=device-width')
+    |   
+    title InstaThink
+    |   
+    link(rel='stylesheet', href='public/vendor/bootstrap/css/bootstrap.min.css', type='text/css')
+    |   
+    link(rel='stylesheet', href='public/vendor/font-awesome/css/font-awesome.min.css', type='text/css')
+    |   
+    link(rel='stylesheet', href='public/css/instathink.css', type='text/css')
+  body
+    | #user
+    .wrap.box
+      .row.row-offcanvas.row-offcanvas-left
+        // sidebaklklkr
+        #sidebar.column.col-sm-2.col-xs-1.sidebar-offcanvas
+          ul.nav
+            li
+              a.visible-xs.text-center(href='#', data-toggle='offcanvas')
+                i.glyphicon.glyphicon-chevron-right
+          |          
+          |           
+          ul#lg-menu.nav.hidden-xs
+            li
+              a(href='/profile')
+                i.fa.fa-smile-o
+                |  My Profile
+            |               
+            li.active
+              a(href='/newfeed')
+                i.fa.fa-newspaper-o
+                |  New Feed
+            |               
+            li
+              a(href='/setting')
+                i.fa.fa-gear
+                |  User Setting
+            |     
+            |               
+            li
+              a(href='/logout')
+                i.fa.fa-sign-out
+                |  Sign out
+          |           
+          ul#sidebar-footer.list-unstyled.hidden-xs
+            li
+              a(href='/')
+                h3 Instathink
+                |  
+                i.fa.fa-heart-o
+                |  You
+          // tiny only nav
+          ul#xs-menu.nav.visible-xs
+            li
+              a.text-center(href='/profile')
+                i.fa.fa-smile-o
+            |               
+            li
+              a.text-center(href='/newfeed')
+                i.fa.fa-newspaper-o
+            |               
+            li
+              a.text-center(href='/setting')
+                i.fa.fa-gear
+            |               
+            li
+              a.text-center(href='/logout')
+                i.fa.fa-sign-out
+        // /sidebar
+        // main
+        #main.column.col-sm-10.col-xs-11
+          // Top nav bar
+          #topnavbar(ng-controller='TopController as topCtrl')
+            nav.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0')
+              .navbar-header
+                a(href='/profile')
+                  img.avatar.pull-left(src='image/getimage/{{topCtrl.Avatar}}', style='margin: 5px;')
+                |               
+                a.navbar-brand(href='/profile') {{topCtrl.DisplayName}}
+                |               
+                form.navbar-form.navbar-left(role='search')
+                  .form-group
+                    input.form-control(ng-model='topCtrl.searchName', type='text', placeholder='Search')
+                  |                 
+                  button.btn.btn-default(ng-click='topCtrl.search()', type='button')
+                    span.glyphicon.glyphicon-search(aria-hidden='true')
+              // /.navbar-header
+              ul.nav.navbar-top-links.navbar-right
+                // Friend request
+                li.dropdown(ng-init='topCtrl.initRequest()')
+                  a.dropdown-toggle.active(href='#', data-toggle='dropdown', aria-expanded='false')
+                    i.fa.fa-user.fa-fw.fa-2x
+                    |                       
+                    span.badge.badge-notify {{topCtrl.requestNumber}}
+                  |                   
+                  ul.dropdown-menu.dropdown-messages.scrollable
+                    li
+                      strong Friend Requests
+                    |                       
+                    li.divider
+                    // items
+                    li(ng-repeat='request in topCtrl.requests')
+                      .chat-person
+                        .media
+                          img.pull-left.avatar(src='image/getimage/{{request.Avatar}}')
+                          |                                 
+                          .media-body
+                            a(href='friendprofile?namefriend={{request.Username}}')
+                              h4.media-heading {{request.DisplayName}}
+                    // /items
+                // Messages
+                li.dropdown(ng-init='topCtrl.initMessage()')
+                  a.dropdown-toggle.active(ng-click='topCtrl.clickMessage()', data-toggle='dropdown', aria-expanded='false')
+                    i.fa.fa-envelope.fa-fw.fa-2x
+                    |                       
+                    span.badge.badge-notify {{topCtrl.messageNumber}}
+                  |                   
+                  ul.dropdown-menu.dropdown-messages.in.scrollable
+                    li
+                      strong Messages
+                    |                       
+                    li.divider
+                    // items
+                    li(ng-repeat='message in topCtrl.messages')
+                      a.active(href='chat?namefriend={{message.Username}}')
+                        .media
+                          img.pull-left.avatar(src='image/getimage/{{message.Avatar}}')
+                          |                                 
+                          .media-body
+                            h4.media-heading {{message.DisplayName}}
+                            |                                   {{message.LastMessage}}
+                            |                                   
+                            p {{message.Time}}
+                    // /items
+                // Notifications
+                li.dropdown(ng-init='topCtrl.initNotification()')
+                  a.dropdown-toggle.active(ng-click='topCtrl.clickNotification()', href='#', data-toggle='dropdown', aria-expanded='false')
+                    i.fa.fa-globe.fa-fw.fa-2x
+                    |                       
+                    span.badge.badge-notify {{topCtrl.notificationNumber}}
+                  |                   
+                  ul.dropdown-menu.dropdown-messages.in.scrollable
+                    li
+                      strong Notifications
+                    |                       
+                    li.divider
+                    // items
+                    li(ng-repeat='notification in topCtrl.notifications')
+                      a.active(href='postdetail?id={{notification.Link}}')
+                        .media
+                          img.pull-left(src='image/getimage/{{notification.Image}}')
+                          |                                 
+                          .media-body
+                            h4.media-heading {{notification.Description}}
+                            |                                   {{notification.Time}}
+                    // /items
+          // /top navbar
+          // Main Content
+          #main-content.full.padding(ng-controller='PostController as postCtrl', ng-init='postCtrl.init()')
+            .row
+              // Content
+              .col-sm-8(ng-controller='PostController as postCtrl')
+                div(ng-hide='postCtrl.hide')
+                  form.form-horizontal(name='postnewform', role='form')
+                    input#inUsername(type='text', value='#{user.Username}')
+                    |                   
+                    input#inPassword(type='text', value='#{user.Password}')
+                    |                   
+                    input#inId(type='text', value='#{user._id}')
+                    |                   
+                    input#inDisplayName(type='text', value='#{user.DisplayName}')
+                    |                   
+                    input#inAvatar(type='text', value='#{user.Avatar}')
+                // Post new
+                .well
+                  img.photoPost(ng-show='postCtrl.showNewImage', src='image/getimage/{{postCtrl.newImage}}')
+                  |                   
+                  form.form-horizontal(name='postnewform', ng-submit='postCtrl.newPost()', role='form')
+                    .form-group(style='padding:14px;')
+                      textarea.form-control(ng-model='postCtrl.new.Body', placeholder="What's happening?")
+                    |                     
+                    button.btn.btn-primary.pull-right(type='submit') Post
+                    |                     
+                    .inputWrapper.pull-right
+                      input.fileInput(onchange='angular.element(this).scope().onFileSelect()', type='file', file-model='myFile')
+                    |                     
+                    ul.list-inline
+                      li
+                      |                       
+                      li
+                        input(ng-model='postCtrl.new.IsAnonymous', type='checkbox')
+                        | Anynomous
+                // /post new
+                // tabs
+                ul.nav.nav-pills
+                  li(role='presentation', ng-class='postCtrl.activeNew', ng-click='postCtrl.showNewFeed()')
+                    a(href='#') Friend feed
+                  |                 
+                  li(role='presentation', ng-class='postCtrl.activeAnynomous', ng-click='postCtrl.showAnynomousFeed()')
+                    a(href='#') Anynomous feed
+                |               
+                br
+                |           
+                |               
+                |               
+                div(ng-init='postCtrl.init()')
+                  // Anynomous feed
+                  .panel.panel-default(ng-show='postCtrl.anynomousShow', ng-repeat='post in postCtrl.listPostAnynomous')
+                    .media.panel-heading.post-heading
+                      a.pull-left(href='#')
+                        img.avatarPost(src='public/img/anynomous-avatar.png')
+                      |                       
+                      .media-body.post-info
+                        h4.media-heading Anynomous
+                        |                         
+                        p {{post.CreateDate}}
+                    |                     
+                    .panel-body
+                      img.photoPost(ng-show='post.Image', src='image/getimage/{{post.Image}}')
+                      |                       
+                      .post-body
+                        p
+                          | {{post.Body}}
+                      |                       
+                      .clearfix
+                    |                     
+                    |                     
+                    .panel-bottom
+                      .like-share
+                        .like-button
+                          a(ng-click='postCtrl.addLike(post._id)', href='#')
+                            | {{post.numLike}} Like 
+                            i.fa.fa-thumbs-up
+                      |                         
+                      input.form-comment.form-control(ng-enter='postCtrl.newComment(post._id)', ng-model='postCtrl.newCommentBody', type='textarea', placeholder='Add a comment..')
+                    |                     
+                    .panel-bottom
+                      // comment items
+                      .media.panel-heading(ng-repeat='comment in post.ListComments')
+                        a.pull-left(href='#')
+                          img.avatar(src='image/getimage/{{comment.Avatar}}')
+                        |                         
+                        .media-body.comment-info
+                          h4.media-heading
+                            a(href='#') {{comment.DisplayName}}
+                          |                           
+                          p {{comment.CreateDate}}
+                          |                           
+                          .comment-body
+                            p {{comment.Body}}
+                          |                           
+                          br
+                  // Anynomous feed
+                  // Friends feed
+                  .panel.panel-default(ng-show='postCtrl.feedShow', ng-repeat='post in postCtrl.listPost')
+                    .media.panel-heading.post-heading
+                      a.pull-left(href='#')
+                        img.avatarPost(src='image/getimage/{{post.Avatar}}')
+                      |                       
+                      .media-body.post-info
+                        h4.media-heading
+                          a(href='#') {{post.DisplayName}}
+                        |                           
+                        p {{post.CreateDate}}
+                    |                     
+                    .panel-body
+                      img.photoPost(ng-show='post.Image', src='image/getimage/{{post.Image}}')
+                      |                       
+                      .post-body
+                        p
+                          | {{post.Body}}
+                      |                       
+                      .clearfix
+                    |                     
+                    |                     
+                    .panel-bottom
+                      .like-share
+                        .like-button
+                          a(ng-click='postCtrl.addLike(post._id)', href='#')
+                            | {{post.numLike}} Like 
+                            i.fa.fa-thumbs-up
+                      |                       
+                      form
+                        input.form-comment.form-control(ng-enter='postCtrl.newComment(post._id)', ng-model='postCtrl.newCommentBody', type='textarea', placeholder='Add a comment..')
+                    |                     
+                    .panel-bottom.panel-comments
+                      // comment items
+                      .media.panel-heading(ng-repeat='comment in post.ListComments')
+                        a.pull-left(href='#')
+                          img.avatar(src='image/getimage/{{comment.Avatar}}')
+                        |                         
+                        .media-body.comment-info
+                          h4.media-heading
+                            a(href='#') {{comment.DisplayName}}
+                          |                           
+                          p {{comment.CreateDate}}
+                          |                           
+                          .comment-body
+                            p {{comment.Body}}
+                  // new feed
+              // /Content
+              // Chat pane
+              .col-sm-4
+                #friend-pane.panel.panel-default.scroll-container
+                  .panel-heading
+                    h4 Friends
+                  |                 
+                  #friend-box.panel-body.scroller
+                    .media(ng-repeat='friend in postCtrl.friends')
+                      img.pull-left.avatar(src='image/getimage/{{friend.Avatar}}')
+                      |                     
+                      .media-body
+                        h4.media-heading
+                          a(href='friendprofile?namefriend={{friend.Username}}') {{friend.Username}}
+                        |                       
+                        .chat-body
+                          a(href='chat?namefriend={{friend.Username}}') Send message to friend
+              // /chat pane
+            // row
+          // /main content
+        // /main
+      // /row
+    // /wrap box
+    script(src='public/vendor/jquery/jquery.min.js')
+    script(src='public/vendor/bootstrap/js/bootstrap.min.js')
+    script(src='public/vendor/angular/angular.min.js')
+    script(src='public/vendor/angular-ui-router/angular-ui-router.min.js')
+    script(src='public/vendor/holderjs/holder.js')
+    script(src='public/js/jquery-1.11.0.js')
+    script(src='public/js/instathink.js')
+    script(src='public/js/angular-file-upload.js')
+    script(src='public/js/angular-file-upload.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='public/js/moment.js')
+    script.
+      moment().format();
+    script(src='public/js/newfeed.js')
+    // <script src="../public/js/MainController.js"></script>

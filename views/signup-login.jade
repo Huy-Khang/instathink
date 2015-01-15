@@ -1,0 +1,105 @@
+doctype 
+html(ng-app='sn')
+head
+    meta(charset='utf-8')
+    |   
+    meta(name='viewport', content='width=device-width')
+    |   
+    title InstaThink
+    |   
+    link(rel='stylesheet', href='public/vendor/bootstrap/css/bootstrap.min.css', type='text/css')
+    |   
+    link(rel='stylesheet', href='public/vendor/font-awesome/css/font-awesome.min.css', type='text/css')
+    |   
+    link(rel='stylesheet', href='public/css/signup-login.css', type='text/css')
+  body
+    script(src='public/js/jquery-1.11.0.js')
+    |   
+    script(src='public/js/bootstrap.min.js')
+    |   
+    script(src='public/js/angular.min.js')
+    |   
+    script(src='public/js/signup-login.js')
+    |   
+    |   
+    .container-full
+      .row
+        .col-lg-12.text-center.v-center
+          h1 Welcome to Insta....THINK !!
+          |           
+          |           
+          br
+          br
+          br
+          |           
+          |           
+          .row(ng-controller='MainController as mainCtrl')
+            form.col-lg-6(name='signupform', role='form', ng-submit='mainCtrl.signUp()')
+              p.lead Sign up to broadcast your thought to the world
+              |               
+              #signup-info.input-group(style='width:340px;text-align:center;margin:0 auto;border-radius:0px;')
+                input.form-control.input-lg(ng-model='mainCtrl.user.Username', placeholder='UserName', type='text', required='')
+                |                 
+                input.form-control.input-lg(ng-model='mainCtrl.user.Email', placeholder='Email address', type='text', required='')
+                |                 
+                input.form-control.input-lg(ng-model='mainCtrl.user.DisplayName', placeholder='Display Name', type='text', required='')
+                |                 
+                input.form-control.input-lg(ng-model='mainCtrl.user.Password', placeholder='Password', type='password', required='')
+                |                 
+                input.form-control.input-lg(ng-model='mainCtrl.user.RePassword', placeholder='Repeat Password', type='password', required='')
+                |                 
+                button.btn.btn-lg.btn-primary(type='submit') Sign Up
+            |             
+            form.col-lg-6(name='signinform', role='form', ng-submit='mainCtrl.signIn()')
+              p.lead Already have a account, log in now !
+              |               
+              #signup-info.input-group(style='width:340px;text-align:center;margin:0 auto;border-radius:0px;')
+                input.form-control.input-lg(ng-model='mainCtrl.user2.Username', placeholder='Username', type='text')
+                |                 
+                input.form-control.input-lg(ng-model='mainCtrl.user2.Password', placeholder='Password', type='password')
+                |                 
+                button.btn.btn-lg.btn-primary(type='submit') Sign In
+            |             
+            #gSignInWrapper
+              // <span class="label">Sign in with:</span>
+              #customBtn.customGPlusSignIn(ng-click='mainCtrl.google()')
+                span.buttonText Sign in with Google
+      // /row
+      .row
+        .col-lg-12.text-center.v-center(style='font-size:39pt;')
+          a(href='#')
+            i.icon-google-plus
+          |  
+          a(href='#')
+            i.icon-facebook
+          |   
+          a(href='#')
+            i.icon-twitter
+          |  
+          a(href='#')
+            i.icon-github
+          |  
+          a(href='#')
+            i.icon-pinterest
+      |   
+      |     
+      br
+      br
+      br
+      br
+      br
+    // /container full
+    .container
+      hr
+      |   
+      .row
+        .col-lg-12
+          br
+          br
+          |           
+          p.pull-right
+            a(href='http://www.bootply.com') Create by Instathink team
+            |  &nbsp; &copy;Copyright 2014
+          |         
+          br
+          br

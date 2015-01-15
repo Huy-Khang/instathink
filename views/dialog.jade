@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    title Beer Locker
+  |   
+  body
+  #user
+  #client
+  #transactionID
+    p Hi #{user.Username}
+    |     
+    p #{client.name} is requesting full access to your account. 
+    |     
+    p Do you approve?
+    |     
+    form(action='/oauth2/authorize', method='post')
+      input(name='transaction_id', type='hidden', value='#{transactionID}')
+      |       
+      div
+        input#allow(type='submit', value='Allow')
+        |       
+        input#deny(type='submit', value='Deny', name='cancel')

@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+var debug = require('debug')('server');
+var app = require('../app');
+var io = require('../io');
+
+
+app.set('port', process.env.PORT || 3000);
+// var io = require('socket.io').listen(app.listen(app.get('port')));
+
+io.attach(app.listen(app.get('port')));
+
+io.sockets.on('connection', function(socket){
+	socket.on('send', function (data) {
+        io.emit(data.to, {from: data.from ,message: data.message});			//test chat
+    });
+});
